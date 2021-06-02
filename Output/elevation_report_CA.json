@@ -1,0 +1,33 @@
+{
+    "header": [
+        {
+            "State": "CA",
+            "Total Number of Stations": 4045,
+            "Number of Stations with Elevation Data": 3789
+        }
+    ],
+    "max": [
+        {
+            "uid": "2737",
+            "state": "CA",
+            "ll": "[-118.23333, 37.58333]",
+            "elev": 12470.0,
+            "name": "WHITE MOUNTAIN 2"
+        }
+    ],
+    "min": [
+        {
+            "uid": "1867",
+            "state": "CA",
+            "ll": "[-115.93333, 33.5]",
+            "elev": -230.0,
+            "name": "SALTON SEA STATE PARK"
+        }
+    ],
+    "median_elev": [
+        1024.0
+    ],
+    "average_elev": [
+        1980.8
+    ]
+}

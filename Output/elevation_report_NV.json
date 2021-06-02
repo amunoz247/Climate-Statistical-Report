@@ -24,10 +24,10 @@
             "name": "RENO 0.6 ENE"
         }
     ],
-    "median": [
+    "median_elev": [
         5130.5
     ],
-    "average": [
+    "average_elev": [
         5209.55
     ]
 }

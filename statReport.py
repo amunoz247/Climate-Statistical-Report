@@ -5,7 +5,7 @@
 #   Climate Statiscal Report Program
 #
 #   Authors: Andrew Munoz
-#   Date: 05/31/2021
+#   Date: 06/01/2021
 #   Purpose: Perform simple data analysis on elevation values found in CSV data files.
 #   Input: Takes in two command line arguments - CSV file data and a US State two-letter abbreviation
 #   Output: Outputs a statistical report in a JSON-file format containing number of stations and max, min, median, and average values. 
@@ -21,28 +21,44 @@ import json
 def main():
 
     # Command Line Input Values
-    dataFile = sys.argv[1]
-    state = sys.argv[2]
-    #dataFile = input("Enter the data file you would like to process: ")
-    #state = input("Enter the two-letter abbreviation for the state you are looking for: ")
+    dataFile = input("Enter the data file you would like to process: ")
+    state = input("Enter the two-letter abbreviation for the state you are looking for: ")
+    #dataFile = sys.argv[1]
+    #state = sys.argv[2]
+
+    # Error Handling for incorrect input values
+    try:
+        with open(dataFile, 'r') as inputFile:
+            inputFile.read()
+    except FileNotFoundError:
+        print("\nFileNotFoundError: The file '%s' does not exist. Please select a different data file to process." % dataFile)
+        sys.exit()
+    # Check abbreviation length for state string and if string is lowercase
+    if len(state) > 2:
+        print("\nValueError: Input '%s' is incorrect for State Abbreviation. State Abbreviation should be two letters." % state)
+        sys.exit()
+    if state.islower():
+        state = state.upper()
 
     # Create an output JSON file path
     jsonOutputFile = r'Output/elevation_report_%s.json' % state
 
-    # Print Input Variables to Command Line
-    print("File: ", dataFile)
-    print("State: ", state)
+    # Print Information to Command Line
+    print("\nFile Selected: ", dataFile)
+    print("State Selected: ", state)
 
-    # Call function to read CSV file
-    # and create JSON output report
+    # Call function to read CSV file and create JSON output report
     statReport(dataFile, state, jsonOutputFile)
 
-# Function to read CSV and create JSON statistical report
+    print("Stat report output file is saved as: ", jsonOutputFile)
+
+# Function to read/process CSV and create JSON statistical report
 # Takes in the csv file, state, and json file path as parameters
 def statReport(csvFilename, stateAbbreviation, jsonFilename):
      
     # Create a list for data values found in csv
     data = []
+
     # Create lists for cleaned data and stations missing data
     stateArray = []
     elevMissing = []
@@ -61,8 +77,8 @@ def statReport(csvFilename, stateAbbreviation, jsonFilename):
     jsonArray['header'] = []
     jsonArray['max'] = []
     jsonArray['min'] = []
-    jsonArray['median'] = []
-    jsonArray['average'] = []
+    jsonArray['median_elev'] = []
+    jsonArray['average_elev'] = []
      
     # Read csv file with DictReader
     with open(csvFilename) as csvf:
@@ -83,11 +99,19 @@ def statReport(csvFilename, stateAbbreviation, jsonFilename):
             data[row]["elev"] = float(data[row]["elev"])
             stateArray.append(data[row])
             numStationsWD += 1
+        # Check if abbreviation is not found in the dataset
+        elif data[row]["state"] != stateAbbreviation:
+            print("\nState '%s' not found in the dataset." % stateAbbreviation)
+            print("Exiting Program...")
+            sys.exit()
     # Sort Station list by elevation value
     stateArray = sorted(stateArray, key = lambda i: i['elev'])
 
     # Loop through clean data set
     for row in stateArray:
+        # Exception if state is not contained in dataset
+        if row["state"] != stateAbbreviation:
+            raise Exception("State passed in is not found in dataset")
         # Look for elevation stat values (max, min, and sum)
         if float(row["elev"])  >= float(elevationMax["elev"]):
             elevationMax = row
@@ -101,7 +125,6 @@ def statReport(csvFilename, stateAbbreviation, jsonFilename):
     # Calculate elevation median
     mid = len(stateArray) // 2
     elevationMedian = (stateArray[mid]["elev"] + stateArray[~mid]["elev"]) / 2
-    print("Median ", elevationMedian)
 
     # Format Header for Json output file
     jsonArray['header'].append({
@@ -113,10 +136,10 @@ def statReport(csvFilename, stateAbbreviation, jsonFilename):
     # Add Stat Values to the Json output file
     jsonArray['max'].append(elevationMax)
     jsonArray['min'].append(elevationMin)
-    jsonArray['median'].append(elevationMedian)
-    jsonArray['average'].append(round(elevationAverage, 2))
+    jsonArray['median_elev'].append(elevationMedian)
+    jsonArray['average_elev'].append(round(elevationAverage, 2))
  
-    # Open the Json file and write to file using the json.dumps() function
+    # Open the Json file and write to file using the json.write() and json.dumps() functions
     with open(jsonFilename, 'w') as jsonf:
         jsonf.write(json.dumps(jsonArray, indent=4))
 
