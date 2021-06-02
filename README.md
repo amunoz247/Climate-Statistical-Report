@@ -7,10 +7,15 @@
 
 ### Run the Program
 
-Follow the steps to build and run the application from the Windows Command Prompt.
+Follow the steps to build and run the application in Windows 10 from the Command Prompt.
 
-1. Download the csv data file for processing and analysis.
-2. Run the python script from the command line.
-    ```python3
-    statReport.py DataFile\<CSV Filename> <State-Abbreviation>
+1. Run the python script.
     ```
+    python3 statReport.py DataFile\<CSV Filename> <State-Abbreviation>
+    ```
+2. Input the data file when prompted in the command line.
+    ```
+    DataFile\<CSV Filename>
+    ```
+3. Input the state abbreviation of the state being searched when prompted in the command line.
+4. The statistical report will be a Json formatted file stored in the Output folder.
