@@ -11,7 +11,7 @@ Follow the steps to build and run the application in Windows 10 from the Command
 
 1. Run the python script.
     ```
-    python3 statReport.py DataFile\<CSV Filename> <State-Abbreviation>
+    python3 statReport.py
     ```
 2. Input the data file when prompted in the command line.
     ```
