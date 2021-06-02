@@ -1,0 +1,33 @@
+{
+    "header": [
+        {
+            "State": "NV",
+            "Total Number of Stations": 868,
+            "Number of Stations with Elevation Data": 820
+        }
+    ],
+    "max": [
+        {
+            "uid": "77534",
+            "state": "NV",
+            "ll": "[-114.61, 39.16]",
+            "elev": 10583.0,
+            "name": "CAVE MOUNTAIN"
+        }
+    ],
+    "min": [
+        {
+            "uid": "82483",
+            "state": "NV",
+            "ll": "[-119.81306, 39.54374]",
+            "elev": 456.0,
+            "name": "RENO 0.6 ENE"
+        }
+    ],
+    "median": [
+        5130.5
+    ],
+    "average": [
+        5209.55
+    ]
+}
