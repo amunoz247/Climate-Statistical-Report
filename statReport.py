@@ -23,8 +23,8 @@ def main():
     # Command Line Input Values
     dataFile = input("Enter the data file you would like to process: ")
     state = input("Enter the two-letter abbreviation for the state you are looking for: ")
-    #dataFile = sys.argv[1]
-    #state = sys.argv[2]
+    # dataFile = sys.argv[1]
+    # state = sys.argv[2]
 
     # Error Handling for incorrect input values
     try:
@@ -99,19 +99,17 @@ def statReport(csvFilename, stateAbbreviation, jsonFilename):
             data[row]["elev"] = float(data[row]["elev"])
             stateArray.append(data[row])
             numStationsWD += 1
-        # Check if abbreviation is not found in the dataset
-        elif data[row]["state"] != stateAbbreviation:
-            print("\nState '%s' not found in the dataset." % stateAbbreviation)
-            print("Exiting Program...")
-            sys.exit()
     # Sort Station list by elevation value
     stateArray = sorted(stateArray, key = lambda i: i['elev'])
 
+    # Check if abbreviation is not found in the dataset
+    if numStationsTotal == 0:
+        print("\nState '%s' not found in the dataset." % stateAbbreviation)
+        print("Exiting Program...")
+        sys.exit()
+
     # Loop through clean data set
     for row in stateArray:
-        # Exception if state is not contained in dataset
-        if row["state"] != stateAbbreviation:
-            raise Exception("State passed in is not found in dataset")
         # Look for elevation stat values (max, min, and sum)
         if float(row["elev"])  >= float(elevationMax["elev"]):
             elevationMax = row
